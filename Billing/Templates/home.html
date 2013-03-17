@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% block contents%}
+THIS IS A TEST OF MY SIGNING IN <a href = "{% url 'ManageBilling:logout' %}">logout</a><br />
+
+{% if user.is_authenticated %}
+<p> Welcome, {{user.username}}</p>
+{% else %}
+<p>welcome, new user!<p>
+{% endif %}
+
+{% endblock %}

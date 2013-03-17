@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% block contents %}
+ONLY ONE CUSTOMER<br />
+{% if customer %}
+	{{customer}}</a>: {{customer.address}}<br />
+{% else %}
+	<p> No results found</p>
+{% endif %}
+{% endblock %}
