@@ -41,7 +41,7 @@ class ContactInteraction(models.Model):
 	contact = models.ForeignKey(Contact)
 
 	def __unicode__(self):
-		return "Interaction with: " + self.contact.name + ", through " + self.interaction_channel
+		return "Interaction on: " + str(self.interaction_date)+ ", through " + self.interaction_channel
 
 class Project(models.Model):
 	name = models.CharField(max_length=200)
@@ -65,4 +65,4 @@ class BilledTime(models.Model):
 	project = models.ForeignKey(Project)
 
 	def __unicode__(self):
-		return self.date + " : " + self.num_hours + " hours"
+		return str(self.date) + " : " + str(self.num_hours) + " hours"

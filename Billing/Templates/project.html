@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% block contents %}
+
+<ul class="breadcrumb">
+	<li><a href="{% url 'ManageBilling:login_view' %}">Home</a> <span class="divider">>></span></li>
+	<li><a href="{% url 'ManageBilling:customers' %}">Customers</a> <span class='divider'>>></span></li>
+	<li><a href="{% url 'ManageBilling:customer' project.customer.pk %}">{{project.customer}}</a> <span class='divider'>>></span></li>
+	<li class = "active">{{project}}</li>
+</ul>
+
+<div class = "page-header">
+	<h1>{{project}}:<br> <small>{{project.start_date}} - {{project.end_date}}</small></h1><br />
+	<p><strong>Hourly Rate: </strong>${{project.hourly_rate}}<br> <strong>Estimated Costs: </strong>${{project.estimated_costs}}
+</div>
+
+{% for time in times %}
+{{time}}<br />
+{% endfor %}
+{{total_time}}
+
+{% endblock %}

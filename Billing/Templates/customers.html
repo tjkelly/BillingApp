@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% block contents %}
-THIS IS CUSTOMERS!!!<br />
+
+
+<div class = "page-header">
+	<h1>Customers</h1><br />
+</div>
+
 {% if customers %}
 	{% for customer in customers %}
-		<a href="{{customer.pk}}">{{customer}}</a>: {{customer.address}}<br /> ID: {{customerID}}
+		<h3><a href="{% url 'ManageBilling:customer' customer.pk%}">{{customer}}</a>:<br> <small>{{customer.address}}</small></h3><br />
 	{% endfor %}
 {% else %}
 	<p> No results found</p>

@@ -1,10 +1,46 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% block contents %}
-ONLY ONE CUSTOMER<br />
-{% if customer %}
-	{{customer}}</a>: {{customer.address}}<br />
-{% else %}
-	<p> No results found</p>
-{% endif %}
+
+<ul class="breadcrumb">
+	<li><a href="{% url 'ManageBilling:login_view' %}">Home</a> <span class="divider">>></span></li>
+	<li><a href="{% url 'ManageBilling:customers' %}">Customers</a> <span class='divider'>>></span></li>
+	<li class='active'>{{customer}}</li>
+</ul>
+
+
+<div class = "page-header">
+	<h1>{{customer}} <small>{{customer.address}}</small></h1><br />
+</div>
+
+<div class="row-fluid">
+<ul class ="thumbnails">
+<li class ="span5">
+	<div class="thumbnail">
+	<div class="caption">
+		<h3>Projects:</h3>
+		<ol>
+	{% for project in projects %}
+		<li><a href="{% url 'ManageBilling:project' customer.pk project.pk %}">{{project}}</a></li>
+	{% endfor %}
+		</ol>
+	</div>
+</div>
+</li>
+<li class="span5">
+	<div class="thumbnail">
+		<div class='caption'>
+			<h3>Contacts:</h3>
+			<ol>
+				{% for contact in contacts %}
+				<li><a href="{% url 'ManageBilling:contact' customer.pk contact.pk %}">{{contact}}</a></li>
+				{% endfor %}
+				
+			</ol>
+		</div>
+	</div>
+</li>
+</ul>
+</div>
+
 {% endblock %}
