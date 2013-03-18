@@ -4,12 +4,12 @@
 
 
 <div class = "page-header">
-	<h1>Customers</h1><br />
+	<h1>Customers</h1>
 </div>
 
 {% if customers %}
 	{% for customer in customers %}
-		<h3><a href="{% url 'ManageBilling:customer' customer.pk%}">{{customer}}</a>:<br> <small>{{customer.address}}</small></h3><br />
+		<h3><a href="{% url 'ManageBilling:customer' customer.pk%}">{{customer}}</a>:<br> <small>{{customer.address}}</small></h3>
 	{% endfor %}
 {% else %}
 	<p> No results found</p>
