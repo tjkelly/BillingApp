@@ -1,0 +1,32 @@
+{% load url from future %}
+<script>
+$(function(){
+	$('.show_add').live("click", function(){
+		$('#new_customer').show();
+		//alert('hello!');
+	});
+});
+</script>
+<div id="new_customer" class= "thumbnail" style="display:none;">
+	<form action="{% url 'ManageBilling:create_customer' %}" method='post' class='form-horizontal'>
+		{% csrf_token %}
+		<div class='control-group'>
+			<label for="customer_name" class="control-label">Name:</label>
+			<div class="controls">
+				<input type="text" name="name" id="customer_name" placeholder='Customer Name'/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="customer_address" class="control-label" >Address:</label>
+			<div class='controls'>
+				<input type="text" name="address" id="customer_address" placeholder='Customer Address'/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<div class='controls'>
+				<input type="submit" value="Add Customer" class='btn'/>
+			</div>
+		</div>
+	</form>
+</div>
+<h2><a href='#'><p class='show_add'>+</p></a></h2>

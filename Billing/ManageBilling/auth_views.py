@@ -21,13 +21,13 @@ def login_view(request):
 				login(request, user)
 				return priv_site_views.home(request)
 			else:
-				return render(request, 'login_page.html', {'error_message':'Your account has been disabled'})
+				return render(request, 'Auth/login_page.html', {'error_message':'Your account has been disabled'})
 		else:
-			return render(request, 'login_page.html', {'error_message':"Your user name or password don't match our records"})
+			return render(request, 'Auth/login_page.html', {'error_message':"Your user name or password don't match our records"})
 	elif request.user.is_authenticated():
 		return priv_site_views.home(request)
 	else:
-		return render(request, 'login_page.html')
+		return render(request, 'Auth/login_page.html')
 
 def log_out(request):
 	logout(request)
@@ -42,7 +42,7 @@ def register(request):
 		last_name = request.POST['last_name']
 
 		if username == '' or password == '' or email == '':
-			return render(request, 'registration_page.html', {'error_message':"A required field has been left empty!",})
+			return render(request, 'Auth/registration_page.html', {'error_message':"A required field has been left empty!",})
 
 		try:
 			user = User.objects.get(username = username)
@@ -55,8 +55,8 @@ def register(request):
 			user.save()
 			user = authenticate(username=username, password=password)
 			login(request, user)
-			return render(request, 'login_page.html', {'success_message':"You successfully registered!",})
+			return render(request, 'Auth/login_page.html', {'success_message':"You successfully registered!",})
 		else:
-			return render(request, 'registration_page.html', {'error_message':"Username already exists!",})
+			return render(request, 'Auth/registration_page.html', {'error_message':"Username already exists!",})
 	else:
-		return render(request, 'registration_page.html')
+		return render(request, 'Auth/registration_page.html')

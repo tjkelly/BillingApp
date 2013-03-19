@@ -9,11 +9,35 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from ManageBilling.models import User, Customer, Project, Contact
 import datetime
+import calendar
+from decimal import *
 
 def return_nav_flag(page):
 	nav_flag = {'Home':'', 'Customers':''}
 	nav_flag[page] = 'active'
 	return nav_flag
+
+def return_this_month_projection(project):
+	now = datetime.datetime.now()
+	hours_this_month = sum(t.num_hours for t in project.billedtime_set.filter(date__year=now.year, date__month = now.month))
+	dollars_this_month = project.hourly_rate * hours_this_month
+	avg_hours_per_day = round(Decimal(hours_this_month) / Decimal(now.day), 2)
+	est_dollars_left = round(Decimal((calendar.mdays[now.month] - now.day)) * Decimal(avg_hours_per_day) * Decimal(project.hourly_rate), 2)
+	est_dollars_total = round(Decimal(dollars_this_month) + Decimal(est_dollars_left), 2)
+
+	return hours_this_month, dollars_this_month, est_dollars_left, est_dollars_total
+
+def return_project_projection(project):
+	now = datetime.datetime.now().date()
+	total_projected_days = (project.end_date - project.start_date).days
+	hours_this_project = sum(t.num_hours for t in project.billedtime_set.all())
+	dollars_this_project = hours_this_project * project.hourly_rate
+	days_this_project = (now - project.start_date).days
+	avg_hours_per_day = round(Decimal(hours_this_project) / Decimal(days_this_project), 2)
+	est_dollars_left = round(Decimal((total_projected_days - days_this_project)) * Decimal(avg_hours_per_day) * Decimal(project.hourly_rate), 2)
+	est_dollars_total = round(Decimal(dollars_this_project) + Decimal(est_dollars_left), 2)
+	return hours_this_project, dollars_this_project, est_dollars_left, est_dollars_total, total_projected_days
+
 
 @login_required()
 def home(request):
@@ -30,15 +54,18 @@ def customers(request, customerID=''):
 	if customerID == '':
 		customers = Customer.objects.all()
 		params['customers'] = customers
-		return render(request, 'customers.html', params)
+		return render(request, 'Customer/customers.html', params)
 	else:
 		customer = Customer.objects.get(pk=customerID)
 		projects = customer.project_set.all()
+		for project in projects:
+			project.month_billed_hours_todate, project.month_billed_dollars_todate, project.month_projected_dollars_left, project.month_projected_total_dollars = return_this_month_projection(project)
+			project.project_billed_hours_todate, project.project_billed_dollars_todate, project.project_projected_dollars_left, project.project_projected_total_dollars, project.total_project_days = return_project_projection(project)
 		contacts = customer.contact_set.all()
 		params['contacts'] = contacts
 		params['customer'] = customer
 		params['projects'] = projects
-		return render(request, 'customer.html', params)
+		return render(request, 'Customer/customer.html', params)
 
 @login_required()
 def project(request,customerID, projectID=''):
@@ -48,12 +75,14 @@ def project(request,customerID, projectID=''):
 		nav_flag = return_nav_flag('Customers')
 		params = {'nav_flag': nav_flag}
 		project = Project.objects.get(pk=projectID)
+		hours_this_month, dollars_this_month, est_dollars_left, est_dollars_total = return_this_month_projection(project)
+
 		params['project'] = project
 		times = project.billedtime_set.all()
 		params['times'] = times
 		total_time = sum(t.num_hours for t in times)
 		params['total_time'] = total_time
-		return render(request, 'project.html', params)
+		return render(request, 'Project/project.html', params)
 
 @login_required()
 def contact(request, customerID, contactID=''):
@@ -68,6 +97,6 @@ def contact(request, customerID, contactID=''):
 		params['contact'] = contact
 		interactions = contact.contactinteraction_set.all()
 		params['interactions'] = interactions
-		return render(request, 'contact.html', params)
+		return render(request, 'Contact/contact.html', params)
 
 

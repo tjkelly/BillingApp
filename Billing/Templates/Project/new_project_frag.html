@@ -1,0 +1,50 @@
+{% load url from future %}
+<script>
+$(function(){
+	$('.show_add_project').live("click", function(){
+		$('#new_project').show();
+		//alert('hello!');
+	});
+});
+</script>
+<div id="new_project" class= "thumbnail" style="display:none;">
+	<form action="{% url 'ManageBilling:create_project' customer.pk %}" method='post' class='form-horizontal'>
+		{% csrf_token %}
+		<div class='control-group'>
+			<label for="project_name" class="control-label">Name:</label>
+			<div class="controls">
+				<input type="text" name="project_name" id="project_name" placeholder='Project Name'/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="start_date" class="control-label" >Start Date:</label>
+			<div class='controls'>
+				<input type="date" name="start_date" id="start_date"/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="end_date" class="control-label" >Start Date:</label>
+			<div class='controls'>
+				<input type="date" name="end_date" id="end_date"/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="hourly_rate" class="control-label">Hourly Rate:</label>
+			<div class="controls">
+				<input type="text" name="hourly_rate" id="hourly_rate" placeholder='$$$'/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="estimated_costs" class="control-label">Estimated Costs:</label>
+			<div class="controls">
+				<input type="text" name="estimated_costs" id="estimated_costs" placeholder='$$$'/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<div class='controls'>
+				<input type="submit" value="Add Project" class='btn'/>
+			</div>
+		</div>
+	</form>
+</div>
+<h2><a href='#'><p class='show_add_project'>+</p></a></h2>

@@ -1,0 +1,32 @@
+{% load url from future %}
+<script>
+$(function(){
+	$('.show_add').live("click", function(){
+		$('#new_time').show();
+		//alert('hello!');
+	});
+});
+</script>
+<div id="new_time" class= "thumbnail" style="display:none;">
+	<form action="{% url 'ManageBilling:create_time' project.customer.pk project.pk%}" method='post' class='form-horizontal'>
+		{% csrf_token %}
+		<div class='control-group'>
+			<label for="date" class="control-label" >Date:</label>
+			<div class='controls'>
+				<input type="date" name="date" id="date"/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="num_hours" class="control-label">Hours:</label>
+			<div class="controls">
+				<input type="text" name="num_hours" id="num_hours"/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<div class='controls'>
+				<input type="submit" value="Add Time" class='btn'/>
+			</div>
+		</div>
+	</form>
+</div>
+<h2><a href='#'><p class='show_add'>+</p></a></h2>

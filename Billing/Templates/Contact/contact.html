@@ -14,19 +14,22 @@
 	<strong>Phone: </strong>{{contact.phone}}  <strong>Email:</strong> {{contact.email}}
 </div>
 
+{% include "Contact/new_interaction_frag.html" %}
 <div class="row-fluid">
+
 	<ul class ="thumbnails">
 		{% for interaction in interactions %}
 		<li>
 			<div class="thumbnail">
 				<div class="caption">
 					<h4>{{interaction}}</h4>
-					<p>{{interaction.note}}</p>
+					<p class='indent'>{{interaction.note}}</p>
 				</div>
 			</div>
 		</li>
 		{% endfor %}
 	</ul>
 </div>
+
 
 {% endblock %}

@@ -1,0 +1,46 @@
+{% load url from future %}
+<script>
+$(function(){
+	$('.show_add_interaction').live("click", function(){
+		$('#new_interaction').show();
+		//alert('hello!');
+	});
+});
+</script>
+
+<h2><a href='#'><p class='show_add_interaction'>+</p></a></h2>
+
+<div id="new_interaction" class= "thumbnail" style="display:none;">
+	<form action="{% url 'ManageBilling:create_interaction' customer.pk contact.pk %}" method='post' class='form-horizontal'>
+		{% csrf_token %}
+		<div class='control-group'>
+			<label for="note" class="control-label">Note:</label>
+			<div class="controls">
+				<input type="text" name="note" id="note" placeholder='notes from interaction'/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="date" class="control-label" >Date:</label>
+			<div class='controls'>
+				<input type="date" name="date" id="date"/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="channel" class="control-label">Channel:</label>
+			<div class="controls">
+				<input type="select" name="channel" id="channel">
+					<option value selected="selected">Select...</option>
+					<option value='Phone'>Phone</option>
+					<option value='Email'>Email</option>
+					<option value='In Person'>In Person</option>
+					<option value='Other'>Other</option>
+				</input>
+			</div>
+		</div>
+		<div class='control-group'>
+			<div class='controls'>
+				<input type="submit" value="Add Interaction" class='btn'/>
+			</div>
+		</div>
+	</form>
+</div>

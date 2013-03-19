@@ -1,0 +1,38 @@
+{% load url from future %}
+<script>
+$(function(){
+	$('.show_add_contact').live("click", function(){
+		$('#new_contact').show();
+		//alert('hello!');
+	});
+});
+</script>
+<div id="new_contact" class= "thumbnail" style="display:none;">
+	<form action="{% url 'ManageBilling:create_contact' customer.pk %}" method='post' class='form-horizontal'>
+		{% csrf_token %}
+		<div class='control-group'>
+			<label for="name" class="control-label" >Name:</label>
+			<div class='controls'>
+				<input type="text" name="name" id="name"/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="phone" class="control-label">Phone:</label>
+			<div class="controls">
+				<input type="text" name="phone" id="phone"/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<label for="email" class="control-label">Email:</label>
+			<div class="controls">
+				<input type="text" name="email" id="email"/>
+			</div>
+		</div>
+		<div class='control-group'>
+			<div class='controls'>
+				<input type="submit" value="Add Contact" class='btn'/>
+			</div>
+		</div>
+	</form>
+</div>
+<h2><a href='#'><p class='show_add_contact'>+</p></a></h2>
