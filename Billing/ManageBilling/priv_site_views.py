@@ -31,7 +31,7 @@ def return_project_projection(project):
 	''' returns the current billed hours and what those hours are worth for the project 
 	-- as well as the projected dollars expected to bill (total, and difference left)
 
-	-- assumes that there are no future times billed
+	-- assumes that there are no future times billed (otherwise the projectection will be all wonky)
 	'''
 	now = datetime.datetime.now().date()
 	total_projected_days = (project.end_date - project.start_date).days
@@ -69,6 +69,10 @@ def customers(request, customerID=''):
 				project.month_billed_hours_todate, project.month_billed_dollars_todate, project.month_projected_dollars_left, project.month_projected_total_dollars = return_this_month_projection(project)
 			customer.month_billed_dollars_todate = sum(p.month_billed_dollars_todate for p in projects)
 			customer.month_projected_total_dollars = sum(p.month_projected_total_dollars for p in projects)
+		month_dollars_billed = sum(c.month_billed_dollars_todate for c in customers)
+		month_dollars_projected = sum(c.month_projected_total_dollars for c in customers)
+		params['month_dollars_billed'] = month_dollars_billed
+		params['month_dollars_projected'] = month_dollars_projected
 		params['customers'] = customers
 		return render(request, 'Customer/customers.html', params)
 	else:

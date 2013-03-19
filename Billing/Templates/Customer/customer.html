@@ -30,38 +30,8 @@ $(function(){
 					<ol>
 						{% for project in projects %}
 						<li><h4><a href="{% url 'ManageBilling:project' customer.pk project.pk %}">{{project}}</a></h4></li>
-						<strong>This Month:</strong>
-						<div class='indent'>
-							<table>
-								<tr>
-									<td>Hours Billed:</td>
-									<td class='indent'>{{project.month_billed_hours_todate}}</td>
-									<td>Dollars Billed:</td>
-									<td class = 'indent'>${{project.month_billed_dollars_todate}}</td>
-								</tr>
-								<tr>
-									<td>Projected Dollars Left:</td>
-									<td class='indent'>${{project.month_projected_dollars_left}}</td>
-									<td>Projected Total:</td>
-									<td class='indent'>${{project.month_projected_total_dollars}}</td>
-								</tr>
-							</table>
-						</div>
-						<strong>Project:</strong>
-						<div class='indent'>
-							<table>
-								<tr>
-									<td>Hours Billed:</td>
-									<td class='indent'>{{project.project_billed_hours_todate}}</td>
-									<td>Dollars Billed:</td>
-									<td class='indent'>${{project.project_billed_dollars_todate}}</td>
-								</tr>
-								<tr>
-									<td>Projected Dollars Left:</td>
-									<td class = 'indent'>${{project.project_projected_dollars_left}}</td>
-									<td>Projected Total:</td>
-									<td class='indent'>${{project.project_projected_total_dollars}}</td>
-							</table>
+						<div class = "">
+							{% include "Project/project_details_frag.html" %}
 						</div>
 						{% endfor %}
 					</ol>
