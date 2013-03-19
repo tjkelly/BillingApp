@@ -57,3 +57,7 @@ pre.ACResult{
 .indent{
   margin-left: 10px;
 }
+td.indent{
+  padding-left: 10px;
+  padding-right:10px;
+}

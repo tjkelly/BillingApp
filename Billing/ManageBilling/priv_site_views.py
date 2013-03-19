@@ -28,15 +28,25 @@ def return_this_month_projection(project):
 	return hours_this_month, dollars_this_month, est_dollars_left, est_dollars_total
 
 def return_project_projection(project):
+	''' returns the current billed hours and what those hours are worth for the project 
+	-- as well as the projected dollars expected to bill (total, and difference left)
+
+	-- assumes that there are no future times billed
+	'''
 	now = datetime.datetime.now().date()
 	total_projected_days = (project.end_date - project.start_date).days
 	hours_this_project = sum(t.num_hours for t in project.billedtime_set.all())
 	dollars_this_project = hours_this_project * project.hourly_rate
 	days_this_project = (now - project.start_date).days
-	avg_hours_per_day = round(Decimal(hours_this_project) / Decimal(days_this_project), 2)
-	est_dollars_left = round(Decimal((total_projected_days - days_this_project)) * Decimal(avg_hours_per_day) * Decimal(project.hourly_rate), 2)
-	est_dollars_total = round(Decimal(dollars_this_project) + Decimal(est_dollars_left), 2)
-	return hours_this_project, dollars_this_project, est_dollars_left, est_dollars_total, total_projected_days
+	if days_this_project > 0:
+		avg_hours_per_day = round(Decimal(hours_this_project) / Decimal(days_this_project), 2)
+		est_dollars_left = round(Decimal((total_projected_days - days_this_project)) * Decimal(avg_hours_per_day) * Decimal(project.hourly_rate), 2)
+		est_dollars_total = round(Decimal(dollars_this_project) + Decimal(est_dollars_left), 2)
+	else:
+		avg_hours_per_day = 0
+		est_dollars_total = 0
+		est_dollars_left = 0
+	return hours_this_project, dollars_this_project, est_dollars_left, est_dollars_total
 
 
 @login_required()
@@ -53,6 +63,12 @@ def customers(request, customerID=''):
 	params = {'nav_flag': nav_flag}
 	if customerID == '':
 		customers = Customer.objects.all()
+		for customer in customers:
+			projects = customer.project_set.all()
+			for project in projects:
+				project.month_billed_hours_todate, project.month_billed_dollars_todate, project.month_projected_dollars_left, project.month_projected_total_dollars = return_this_month_projection(project)
+			customer.month_billed_dollars_todate = sum(p.month_billed_dollars_todate for p in projects)
+			customer.month_projected_total_dollars = sum(p.month_projected_total_dollars for p in projects)
 		params['customers'] = customers
 		return render(request, 'Customer/customers.html', params)
 	else:
@@ -60,7 +76,7 @@ def customers(request, customerID=''):
 		projects = customer.project_set.all()
 		for project in projects:
 			project.month_billed_hours_todate, project.month_billed_dollars_todate, project.month_projected_dollars_left, project.month_projected_total_dollars = return_this_month_projection(project)
-			project.project_billed_hours_todate, project.project_billed_dollars_todate, project.project_projected_dollars_left, project.project_projected_total_dollars, project.total_project_days = return_project_projection(project)
+			project.project_billed_hours_todate, project.project_billed_dollars_todate, project.project_projected_dollars_left, project.project_projected_total_dollars = return_project_projection(project)
 		contacts = customer.contact_set.all()
 		params['contacts'] = contacts
 		params['customer'] = customer
@@ -75,7 +91,8 @@ def project(request,customerID, projectID=''):
 		nav_flag = return_nav_flag('Customers')
 		params = {'nav_flag': nav_flag}
 		project = Project.objects.get(pk=projectID)
-		hours_this_month, dollars_this_month, est_dollars_left, est_dollars_total = return_this_month_projection(project)
+		project.month_billed_hours_todate, project.month_billed_dollars_todate, project.month_projected_dollars_left, project.month_projected_total_dollars = return_this_month_projection(project)
+		project.project_billed_hours_todate, project.project_billed_dollars_todate, project.project_projected_dollars_left, project.project_projected_total_dollars = return_project_projection(project)
 
 		params['project'] = project
 		times = project.billedtime_set.all()

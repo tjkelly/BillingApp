@@ -13,11 +13,18 @@
 	<h1>{{project}}:<br> <small>{{project.start_date}} - {{project.end_date}}</small></h1>
 	<p><strong>Hourly Rate: </strong>${{project.hourly_rate}} <strong>Estimated Costs: </strong>${{project.estimated_costs}}
 </div>
-<strong>Total Hours Recorded:</strong> {{total_time}}<br />
-{% for time in times %}
-{{time}}<br />
-{% endfor %}
-{% include "Project/new_time_frag.html" %}
+
+<div class='thumbnail'>
+	{% include "Project/project_details_frag.html" %}
+</div>
+<br />
+<div class='thumbnail'>
+	{% include "Project/new_time_frag.html" %}
+
+	{% for time in times %}
+		{{time}}<br />
+	{% endfor %}
+</div>
 
 
 {% endblock %}

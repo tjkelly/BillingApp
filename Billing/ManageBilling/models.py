@@ -11,6 +11,9 @@ from django.utils.timezone import utc, get_current_timezone
 class Customer(models.Model):
 	name = models.CharField(max_length=200)
 	address = models.CharField(max_length=200, blank = True, null = True)
+	
+	month_billed_dollars_todate = 0
+	month_projected_total_dollars = 0
 
 	def __unicode__(self):
 		return self.name
@@ -50,28 +53,17 @@ class Project(models.Model):
 	hourly_rate = models.DecimalField(max_digits = 6, decimal_places = 2)
 	is_complete = models.BooleanField(default = False)
 	estimated_costs = models.DecimalField(max_digits = 6, decimal_places = 2)
-	hours_billed_to_date = models.DecimalField(max_digits = 6, decimal_places = 2, blank = True, null = True)
-	projected_month_hours =  models.DecimalField(max_digits = 6, decimal_places = 2, blank = True, null = True)
 
 	month_projected_total_dollars = '0'
 	month_projected_dollars_left = '0'
 	month_billed_hours_todate = '0'
 	month_billed_dollars_todate = '0'
 
-	project_projected_total_hours ='0'
 	project_projected_dollars_left = '0'
 	project_projected_total_dollars = '0'
 	project_billed_hours_todate = '0'
 	project_billed_dollars_todate = '0'
 
-	projected_month_dollars = '0'
-	projected_project_hours = models.DecimalField(max_digits = 6, decimal_places = 2, blank = True, null = True)
-	projected_project_dollars= '0'
-	projected_month_dollars_left = '0.0'
-	dollars_billed_to_date = '0'
-	hours_billed_this_month = '0'
-	dollars_billed_this_month = '0'
-	total_project_days = '0'
 	customer = models.ForeignKey(Customer)
 
 	def __unicode__(self):

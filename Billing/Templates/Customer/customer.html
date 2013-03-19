@@ -30,17 +30,39 @@ $(function(){
 					<ol>
 						{% for project in projects %}
 						<li><h4><a href="{% url 'ManageBilling:project' customer.pk project.pk %}">{{project}}</a></h4></li>
-						This Month:
-						<div class='thumbnail'>
-							<strong>Hours Billed This Month: </strong>{{project.month_billed_hours_todate}}, <strong>Dollars Billed This Month:</strong> {{project.month_billed_dollars_todate}}<br />
-							<strong>Projected Dollars Left this month:</strong> {{project.month_projected_dollars_left}}, <strong>Projected Total Month Dollars:</strong>{{project.month_projected_total_dollars}} <br />
+						<strong>This Month:</strong>
+						<div class='indent'>
+							<table>
+								<tr>
+									<td>Hours Billed:</td>
+									<td class='indent'>{{project.month_billed_hours_todate}}</td>
+									<td>Dollars Billed:</td>
+									<td class = 'indent'>${{project.month_billed_dollars_todate}}</td>
+								</tr>
+								<tr>
+									<td>Projected Dollars Left:</td>
+									<td class='indent'>${{project.month_projected_dollars_left}}</td>
+									<td>Projected Total:</td>
+									<td class='indent'>${{project.month_projected_total_dollars}}</td>
+								</tr>
+							</table>
 						</div>
-						Project:
-						<div class='thumbnail'>
-							<strong>Hours Billed This Month: </strong>{{project.project_billed_hours_todate}}, <strong>Dollars Billed This Month:</strong> {{project.project_billed_dollars_todate}}<br />
-							<strong>Projected Dollars Left this month:</strong> {{project.project_projected_dollars_left}}, <strong>Projected Total Month Dollars:</strong>{{project.project_projected_total_dollars}} <br />
+						<strong>Project:</strong>
+						<div class='indent'>
+							<table>
+								<tr>
+									<td>Hours Billed:</td>
+									<td class='indent'>{{project.project_billed_hours_todate}}</td>
+									<td>Dollars Billed:</td>
+									<td class='indent'>${{project.project_billed_dollars_todate}}</td>
+								</tr>
+								<tr>
+									<td>Projected Dollars Left:</td>
+									<td class = 'indent'>${{project.project_projected_dollars_left}}</td>
+									<td>Projected Total:</td>
+									<td class='indent'>${{project.project_projected_total_dollars}}</td>
+							</table>
 						</div>
-						{{project.total_project_days}}
 						{% endfor %}
 					</ol>
 					{% include "Project/new_project_frag.html" %}
