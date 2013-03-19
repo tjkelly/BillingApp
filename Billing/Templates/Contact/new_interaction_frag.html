@@ -8,7 +8,7 @@ $(function(){
 });
 </script>
 
-<h2><a href='#'><p class='show_add_interaction'>+</p></a></h2>
+<h4><small><a href='#'><p class='show_add_interaction'>add</p></a></small></h4>
 
 <div id="new_interaction" class= "thumbnail" style="display:none;">
 	<form action="{% url 'ManageBilling:create_interaction' customer.pk contact.pk %}" method='post' class='form-horizontal'>

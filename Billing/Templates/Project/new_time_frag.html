@@ -8,7 +8,7 @@ $(function(){
 });
 </script>
 
-<h2><a href='#'><p class='show_add'>+</p></a></h2>
+<h4><a href='#'><p class='show_add'>add</p></a></h4>
 
 <div id="new_time" class= "thumbnail" style="display:none;">
 	<form action="{% url 'ManageBilling:create_time' project.customer.pk project.pk%}" method='post' class='form-horizontal'>
